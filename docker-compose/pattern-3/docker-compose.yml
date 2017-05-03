@@ -14,6 +14,10 @@ services:
       dockerfile: pattern-3/am-analytics/Dockerfile
     environment:
       - SLEEP=100
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - WSO2_ADMIN_USERNAME=${ADMIN_USER_NAME}
+      - WSO2_ADMIN_PASSWORD=${ADMIN_PASSWORD}
     ports:
     - "9448:9444"
   traffic-manager:
@@ -23,6 +27,10 @@ services:
       dockerfile: pattern-3/traffic-manager/Dockerfile
     environment:
       - SLEEP=50
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - WSO2_ADMIN_USERNAME=${ADMIN_USER_NAME}
+      - WSO2_ADMIN_PASSWORD=${ADMIN_PASSWORD}
     ports:
     - "9447:9443"
   keymanager:
@@ -32,6 +40,10 @@ services:
       dockerfile: pattern-3/keymanager/Dockerfile
     environment:
       - SLEEP=110
+      - WSO2_ADMIN_USERNAME=${ADMIN_USER_NAME}
+      - WSO2_ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
     ports:
     - "9443:9443"
   gateway-manager:
@@ -40,6 +52,21 @@ services:
       context: ../
       dockerfile: pattern-3/gateway-manager/Dockerfile
     environment:
+      - ENABLE_HAZELCAST_CLUSTERING=${ENABLE_HAZELCAST_CLUSTERING}
+      - HAZELCAST_MEMBER_SCHEME=${HAZELCAST_MEMBER_SCHEME}
+      - HAZELCAST_LOCAL_MEMBER_PORT=${HAZELCAST_LOCAL_MEMBER_PORT}
+      - HAZELCAST_LOCAL_MEMBER_HOST=${HAZELCAST_LOCAL_MEMBER_HOST_MANAGER}
+      - MEMBERS_LIST=${MEMBERS_LIST_MANAGER}
+      - AWS_SEC_GRP=${AWS_SEC_GRP}
+      - AWS_SEC_RGN=${AWS_SEC_RGN}
+      - AWS_TAG_KEY=${AWS_TAG_KEY_GW}
+      - AWS_TAG_VAL=${AWS_TAG_VAL_GW}
+      - WSO2_ADMIN_USERNAME=${ADMIN_USER_NAME}
+      - WSO2_ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - AWS_CLIENT_ID=${AWS_CLIENT_ID}
+      - AWS_CLIENT_SECRET=${AWS_CLIENT_SECRET}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
       - SLEEP=150
     ports:
     - "9444:9443"
@@ -49,6 +76,21 @@ services:
       context: ../
       dockerfile: pattern-3/gateway-worker/Dockerfile
     environment:
+      - ENABLE_HAZELCAST_CLUSTERING=${ENABLE_HAZELCAST_CLUSTERING}
+      - HAZELCAST_MEMBER_SCHEME=${HAZELCAST_MEMBER_SCHEME}
+      - HAZELCAST_LOCAL_MEMBER_PORT=${HAZELCAST_LOCAL_MEMBER_PORT}
+      - HAZELCAST_LOCAL_MEMBER_HOST=${HAZELCAST_LOCAL_MEMBER_HOST_WORKER}
+      - MEMBERS_LIST=${MEMBERS_LIST_WORKER}
+      - AWS_SEC_GRP=${AWS_SEC_GRP}
+      - AWS_SEC_RGN=${AWS_SEC_RGN}
+      - AWS_TAG_KEY=${AWS_TAG_KEY_GW}
+      - AWS_TAG_VAL=${AWS_TAG_VAL_GW}
+      - WSO2_ADMIN_USERNAME=${ADMIN_USER_NAME}
+      - WSO2_ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - AWS_CLIENT_ID=${AWS_CLIENT_ID}
+      - AWS_CLIENT_SECRET=${AWS_CLIENT_SECRET}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
       - SLEEP=230
     ports:
     - "8280:8280"
@@ -61,6 +103,24 @@ services:
       context: ../
       dockerfile: pattern-3/store/Dockerfile
     environment:
+      - ENABLE_HAZELCAST_CLUSTERING=${ENABLE_HAZELCAST_CLUSTERING}
+      - HAZELCAST_MEMBER_SCHEME=${HAZELCAST_MEMBER_SCHEME}
+      - HAZELCAST_LOCAL_MEMBER_PORT=${HAZELCAST_LOCAL_MEMBER_PORT}
+      - HAZELCAST_LOCAL_MEMBER_HOST=${HAZELCAST_LOCAL_MEMBER_HOST_STORE}
+      - MEMBERS_LIST=${MEMBERS_LIST_STORE}
+      - AWS_SEC_GRP=${AWS_SEC_GRP}
+      - AWS_SEC_RGN=${AWS_SEC_RGN}
+      - AWS_TAG_KEY=${AWS_TAG_KEY_PUBSTORE}
+      - AWS_TAG_VAL=${AWS_TAG_VAL_PUBSTORE}
+      - GATEWAY_SERVER_URL=${GATEWAY_SERVER_URL}
+      - GATEWAY_NON_SECURE_ENDPOINT_URL=${GATEWAY_NON_SECURE_ENDPOINT_URL},${GATEWAY_SECURE_ENDPOINT_URL}
+      - GATEWAY_REVOKE_API_URL=${GATEWAY_REVOKE_API_URL}
+      - WSO2_ADMIN_USERNAME=${ADMIN_USER_NAME}
+      - WSO2_ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - AWS_CLIENT_ID=${AWS_CLIENT_ID}
+      - AWS_CLIENT_SECRET=${AWS_CLIENT_SECRET}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
       - SLEEP=250
     ports:
     - "9446:9443"
@@ -70,6 +130,21 @@ services:
       context: ../
       dockerfile: pattern-3/publisher/Dockerfile
     environment:
+      - ENABLE_HAZELCAST_CLUSTERING=${ENABLE_HAZELCAST_CLUSTERING}
+      - HAZELCAST_MEMBER_SCHEME=${HAZELCAST_MEMBER_SCHEME}
+      - HAZELCAST_LOCAL_MEMBER_PORT=${HAZELCAST_LOCAL_MEMBER_PORT}
+      - HAZELCAST_LOCAL_MEMBER_HOST=${HAZELCAST_LOCAL_MEMBER_HOST_PUBLISHER}
+      - MEMBERS_LIST=${MEMBERS_LIST_PUBLISHER}
+      - AWS_SEC_GRP=${AWS_SEC_GRP}
+      - AWS_SEC_RGN=${AWS_SEC_RGN}
+      - AWS_TAG_KEY=${AWS_TAG_KEY_PUBSTORE}
+      - AWS_TAG_VAL=${AWS_TAG_VAL_PUBSTORE}
+      - WSO2_ADMIN_USERNAME=${ADMIN_USER_NAME}
+      - WSO2_ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - AWS_CLIENT_ID=${AWS_CLIENT_ID}
+      - AWS_CLIENT_SECRET=${AWS_CLIENT_SECRET}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
       - SLEEP=200
     ports:
       - "9445:9443"

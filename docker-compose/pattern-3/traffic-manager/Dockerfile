@@ -23,3 +23,14 @@ RUN mv /mnt/wso2am-2.1.0/repository/conf/registry_TM.xml /mnt/wso2am-2.1.0/repos
 
 RUN rm /mnt/wso2am-2.1.0/repository/conf/axis2/axis2.xml
 RUN mv /mnt/wso2am-2.1.0/repository/conf/axis2/axis2_TM.xml /mnt/wso2am-2.1.0/repository/conf/axis2/axis2.xml
+
+USER root
+RUN chmod 755 /mnt/wso2-artifacts/bin
+RUN chmod -R 755 /mnt/wso2-artifacts/repository
+
+COPY pattern-3/scripts/image-init.sh /usr/local/bin
+RUN chmod +x /usr/local/bin/image-init.sh
+RUN sed -ie 's^#!/bin/bash^ ^g' /usr/local/bin/init.sh
+RUN cat /usr/local/bin/init.sh >> /usr/local/bin/image-init.sh
+RUN rm /usr/local/bin/init.sh
+RUN mv /usr/local/bin/image-init.sh /usr/local/bin/init.sh

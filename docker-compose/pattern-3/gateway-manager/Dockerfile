@@ -22,10 +22,20 @@ RUN adduser --quiet --disabled-password --shell /bin/bash --home /home/rsyncuser
 RUN usermod -aG sudo rsyncuser
 RUN adduser rsyncuser sudo
 RUN echo "rsyncuser:rsyncuser" | chpasswd
+RUN chmod 755 /mnt/wso2-artifacts/bin
+RUN chmod -R 755 /mnt/wso2-artifacts/repository
+RUN rm -r /mnt/wso2
 
 RUN apt-get update && apt-get install -y apt-utils rsync ssh openssh-server supervisor
 RUN mkdir -p  /var/run/sshd /var/log/supervisor
 COPY pattern-3/supervisor/supervisord-gateway-manager.conf /etc/supervisor/conf.d/supervisord.conf
+
+COPY pattern-3/scripts/image-init.sh /usr/local/bin
+RUN chmod +x /usr/local/bin/image-init.sh
+RUN sed -ie 's^#!/bin/bash^ ^g' /usr/local/bin/init.sh
+RUN cat /usr/local/bin/init.sh >> /usr/local/bin/image-init.sh
+RUN rm /usr/local/bin/init.sh
+RUN mv /usr/local/bin/image-init.sh /usr/local/bin/init.sh
 
 RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
